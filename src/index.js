@@ -23,14 +23,6 @@ function calculateWinner(squares) {
     [2, 4, 6],
   ];
 
-  /*    lines.reduce(function(squareIndex, iAcc){
-    //let [a, b, c] = squareIndex;
-    return;
-  // return (squares[a] && squares[a] === squares[b] && squares[a] ===
-  squares[c]) ? squares[a] : null;
-  }, '');
-*/
-
   for (let i = 0; i < lines.length; i += 1) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {

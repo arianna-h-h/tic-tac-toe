@@ -2,7 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-function Square(props) {
+
+const initialState = {
+  history: [{
+    squares: Array(9).fill(null),
+  }],
+  stepNumber: 0,
+  xIsNext: true,
+};
+
+function ticTacApp(state = initialState, action){
+  return state;
+}
+/* function Square(props) {
   // onClick="handleClick" -->
   return ( // css class, passing in function to be used
     <button className="square" onClick={props.onClick}>
@@ -146,4 +158,4 @@ class Game extends React.Component {
 ReactDOM.render(
   <Game />,
   document.getElementById('root'),
-);
+); */

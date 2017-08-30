@@ -1,19 +1,125 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createStore } from 'redux';
 import './index.css';
+import './actions.js';
 
 
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+
+  for (let i = 0; i < lines.length; i += 1) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+}
 const initialState = {
   history: [{
-    squares: Array(9).fill(null),
+    currentBoard: Array(9).fill(null)
   }],
   stepNumber: 0,
   xIsNext: true,
 };
 
-function ticTacApp(state = initialState, action){
-  return state;
+const ticTac = (state = initialState, action) => { //reducer
+  switch (action.type) {
+    case 'INCREMENT_STEP':
+      return {
+        ...state,
+        stepNumber: state.stepNumber + 1
+      }
+      case 'TOGGLE_PLAYER':
+        return {
+          ...state,
+          xIsNext: !state.xIsNext
+        }
+      case 'UPDATE_BOARD':
+        return {
+          ...state,
+          history: state.history.concat([state.currentBoard])
+      }
+    default:
+      return state;
+  }
 }
+
+const store = createStore(ticTac);
+
+const render = () => {
+  ReactDOM.render(
+  <Game value={store.getState()} />,
+  document.getElementById('root')
+  );
+}
+
+store.subscribe(render);
+render();
+
+class Game extends React.Component {
+  handleClick(i) {
+    if (calculateWinner(squares) || squares[i]) {
+      return;
+    }
+  }
+
+  render() {
+  /*render() {
+    const history = this.state.history;
+    const current = history[this.state.stepNumber];
+    const winner = calculateWinner(current.squares);
+
+    const moves = history.map((step, move) => { // step is currVal, move is index
+      const desc = move ? // 0 is falsey
+      `Move #  ${move}` :
+        'Game start';*/
+
+        <li key ={move}>
+          <a href="#" onClick={() => this.jumpTo(move)}>
+            {desc}</a>
+        </li>
+
+
+    let status;
+    if (winner) {
+      status = `Winner: ${winner}`;
+    } else {
+      status = `Next player: ${(this.state.xIsNext ? 'X' : 'O')}`;
+    }
+
+    return (
+      <div className="game">
+        <div className="game-board">
+          <div>Hello World</div>
+          {console.log(this.props.value)}
+          <Board
+            squares={current.squares} // props
+            onClick={i => this.handleClick(i)} // props
+          />
+        </div>
+        <div className="game-info">
+          <div>{status}</div>
+          <ol>{moves}</ol>
+        </div>
+      </div>
+    );
+  }
+}
+
+
+
+
 /* function Square(props) {
   // onClick="handleClick" -->
   return ( // css class, passing in function to be used

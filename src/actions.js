@@ -10,7 +10,7 @@ export function incrementStep () {
   };
 }
 
-export function updateBoard (position) { // i in handleClick?
+export function updateBoard (position) {
   return {
     type: 'UPDATE_BOARD',
     position
@@ -25,12 +25,7 @@ const initialState = {
   xIsNext: true
 };
 
-// action = {
-//   type: 'UPDATE_BOARD',
-//   position: 0,
-// }
-
-export const ticTac = (state = initialState, action) => { // reducer
+export const ticTac = (state = initialState, action) => {
   switch (action.type) {
     case 'INCREMENT_STEP':
       return {

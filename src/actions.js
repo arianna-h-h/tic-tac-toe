@@ -38,16 +38,11 @@ export const ticTac = (state = initialState, action) => {
         xIsNext: !state.xIsNext
       };
     case 'UPDATE_BOARD':
-      const position = action.position;
-      const currentPlayer = state.xIsNext ? 'X' : 'O';
-      const oldBoard = state.history[state.history.length - 1].board.slice();
-      oldBoard[position] = currentPlayer;
-      const newBoard = oldBoard;
-      const newHistory = state.history.concat([{ board: newBoard }]);
-
+      const oldBoard = [...state.history[state.history.length - 1].board];
+      oldBoard[action.position] = state.xIsNext ? 'X' : 'O';
       return {
         ...state,
-        history: newHistory
+        history: [...state.history, { board: oldBoard }]
       };
     default:
       return state;

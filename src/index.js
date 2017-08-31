@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import { createStore } from 'redux';
 // import { connect } from 'react-redux';
 import './index.css';
@@ -10,10 +11,10 @@ import {
   ticTac
 } from './actions.js';
 
-function Square(props) { // all squares are rendered b4 here
-    console.log('top of square function')
+function Square (props) { // all squares are rendered b4 here
+  console.log('top of square function');
   return (
-    <button className="square" onClick={props.onClick}>
+    <button className='square' onClick={props.onClick}>
       {props.value}
       {console.log('inside square button' + props.onClick)}
       {/* determines value of button */}
@@ -22,8 +23,8 @@ function Square(props) { // all squares are rendered b4 here
 }
 
 class Board extends React.Component {
-  renderSquare(i) {
-    {console.log('at render square')}
+  renderSquare (i) {
+    console.log('at render square');
     const currentBoard = this.props.squares;
     const position = currentBoard[i]; // => 'X' || 'O' || null
     return (
@@ -34,23 +35,23 @@ class Board extends React.Component {
     );
   }
 
-  render() { //happens before render square
-      {console.log('at render in board')}
+  render () { // happens before render square
+    console.log('at render in board');
     return (
       <div>
-        <div className="board-row">
+        <div className='board-row'>
           {console.log('before br 0')}
           {this.renderSquare(0)}
           {console.log('after br 0')}
           {this.renderSquare(1)}
           {this.renderSquare(2)}
         </div>
-        <div className="board-row">
+        <div className='board-row'>
           {this.renderSquare(3)}
           {this.renderSquare(4)}
           {this.renderSquare(5)}
         </div>
-        <div className="board-row">
+        <div className='board-row'>
           {this.renderSquare(6)}
           {this.renderSquare(7)}
           {this.renderSquare(8)}
@@ -66,27 +67,27 @@ class Game extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick(i) { //passing correctly
-    console.log('at handleClick'); //only when something is clicked
-    store.dispatch(updateBoard(i))
-    store.dispatch(togglePlayer()) //switch player when clicked
-    store.dispatch(incrementStep())
-    //action dispatch
+  handleClick (i) { // passing correctly
+    console.log('at handleClick'); // only when something is clicked
+    store.dispatch(updateBoard(i));
+    store.dispatch(togglePlayer()); // switch player when clicked
+    store.dispatch(incrementStep());
+    // action dispatch
   }
-  render() { //render happens before a click
-    const history = this.props.history.slice(0, this.props.stepNumber + 1); //returns a copy for no mutation
-    console.log("History: ", history);
-    const board = history[history.length - 1].board; //makes a copy of last board
-    //const { board } = current;
+  render () { // render happens before a click
+    const history = this.props.history.slice(0, this.props.stepNumber + 1); // returns a copy for no mutation
+    console.log('History: ', history);
+    const board = history[history.length - 1].board; // makes a copy of last board
+    // const { board } = current;
     console.log(board);
     return (
-      <div className="game">
-        <div className="game-board">
-                 <Board
-                  squares={board} //curent board (state in history)
-                  onClick={i => this.handleClick(i)} // position props
-                />
-            </div>
+      <div className='game'>
+        <div className='game-board'>
+          <Board
+            squares={board} // curent board (state in history)
+            onClick={i => this.handleClick(i)} // position props
+          />
+        </div>
       </div>
     );
   }
@@ -94,27 +95,39 @@ class Game extends React.Component {
 
 const store = createStore(ticTac);
 
-//fun activity: console.log state inside of render
+// fun activity: console.log state inside of render
 const render = () => {
   const { history, xIsNext, stepNumber } = store.getState();
   ReactDOM.render(
-  <Game
-    history={history}
-    xIsNext={xIsNext}
-    stepNumber={stepNumber} />,
-  document.getElementById('root')
+    <Game
+      history={history}
+      xIsNext={xIsNext}
+      stepNumber={stepNumber} />,
+    document.getElementById('root')
   );
-}
+};
 
 store.subscribe(render);
 render();
 
+Game.propTypes = {
+  history: PropTypes.array,
+  stepNumber: PropTypes.number
+};
 
+Square.propTypes = {
+  onClick: PropTypes.func,
+  value: PropTypes.array
+};
 
+Board.propTypes = {
+  onClick: PropTypes.func,
+  squares: PropTypes.array
+};
 /* function Square(props) {
-  // onClick="handleClick" -->
+  // onClick='handleClick' -->
   return ( // css class, passing in function to be used
-    <button className="square" onClick={props.onClick}>
+    <button className='square' onClick={props.onClick}>
       {props.value}
     </button>
   );
@@ -154,17 +167,17 @@ class Board extends React.Component {
   render() {
     return (
       <div>
-        <div className="board-row">
+        <div className='board-row'>
           {this.renderSquare(0)}
           {this.renderSquare(1)}
           {this.renderSquare(2)}
         </div>
-        <div className="board-row">
+        <div className='board-row'>
           {this.renderSquare(3)}
           {this.renderSquare(4)}
           {this.renderSquare(5)}
         </div>
-        <div className="board-row">
+        <div className='board-row'>
           {this.renderSquare(6)}
           {this.renderSquare(7)}
           {this.renderSquare(8)}
@@ -221,7 +234,7 @@ class Game extends React.Component {
         'Game start';
       return (
         <li key ={move}>
-          <a href="#" onClick={() => this.jumpTo(move)}>
+          <a href='#' onClick={() => this.jumpTo(move)}>
             {desc}</a>
         </li>
       );
@@ -235,14 +248,14 @@ class Game extends React.Component {
     }
 
     return (
-      <div className="game">
-        <div className="game-board">
+      <div className='game'>
+        <div className='game-board'>
           <Board
             squares={current.squares} // props
             onClick={i => this.handleClick(i)} // props
           />
         </div>
-        <div className="game-info">
+        <div className='game-info'>
           <div>{status}</div>
           <ol>{moves}</ol>
         </div>
